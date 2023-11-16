@@ -6,22 +6,24 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.example.mydiscountapp.components.*
+import com.example.mydiscountapp.viewModel.CalculateViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView(){
+fun HomeView(viewModel:CalculateViewModel){
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = { CenterAlignedTopAppBar( title = { Text(text = "Descuentos") }, colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
         containerColor= MaterialTheme.colorScheme.primary
     )) }) {
-        ContentHomeView(it)
+        ContentHomeView(it, viewModel)
     }
 }
 @Composable
-fun ContentHomeView(paddingValues: PaddingValues){
+fun ContentHomeView(paddingValues: PaddingValues, viewModel: CalculateViewModel){
     Column(modifier = Modifier
         .padding(paddingValues)
         .padding(top = 30.dp)
@@ -38,8 +40,8 @@ fun ContentHomeView(paddingValues: PaddingValues){
             MainTextField(value = discount, onChangeValue = { discount = it}, label = "Descuento")
             GridWithColumns(
                 items = listOf(
-                    { MainCard(title = "Precio", number = priceWithDiscount, modifier= Modifier.fillMaxWidth()) },
-                    { MainCard(title = "Descuento", number = totalDiscount,modifier= Modifier.fillMaxWidth()) }
+                    { MainCard(title = "Precio", number = priceWithDiscount, modifier= Modifier.testTag("price-card").fillMaxWidth()) },
+                    { MainCard(title = "Descuento", number = totalDiscount,modifier= Modifier.testTag("discount-card").fillMaxWidth()) }
                 ),
                 3
             )
@@ -52,11 +54,11 @@ fun ContentHomeView(paddingValues: PaddingValues){
 
             }
             MainButton(text = "Calcular") {
-                if(price != "" && discount != ""){
-                    priceWithDiscount = calculatePrice(price.toDouble(), discount.toDouble())
-                    totalDiscount= calculateDiscount(price.toDouble(), discount.toDouble())
-                }else{
-                    showALert=true
+                val result = viewModel.calculate(price, discount)
+                showALert=result.second.second
+                if(!showALert){
+                    priceWithDiscount = result.first
+                    totalDiscount = result.second.first
                 }
 
             }
@@ -81,7 +83,7 @@ fun ContentHomeView(paddingValues: PaddingValues){
     }
 }
 
-
+/*
 fun calculatePrice(price: Double, discount: Double): Double {
     val discountedPrice = calculateDiscount(price, discount)
     return round(price - discountedPrice)
@@ -91,4 +93,4 @@ fun calculateDiscount(price: Double, discount: Double): Double {
     val discountedAmount = price * (discount / 100)
     return round(discountedAmount)
 }
-
+*/

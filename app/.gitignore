@@ -1,1 +1,27 @@
 /build
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# IntelliJ IDEA files
+.idea/
+
+# Keystore files
+*.jks
+
+# Compiled Kotlin files
+*.class
+
+# Binary files (e.g., .jar, .aar)
+*.jar
+*.aar
+
+# Logs
+*.log
+
+# Android generated files
+/*/build/
+/*/out/

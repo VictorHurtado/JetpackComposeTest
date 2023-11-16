@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -39,7 +40,7 @@ fun MainTextField(value: String, onChangeValue: (String)-> Unit, label: String){
         onValueChange = onChangeValue,
         label={Text(text= label)},
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        modifier = Modifier
+        modifier = Modifier.testTag(label)
             .fillMaxWidth()
             .padding(horizontal = 30.dp)
         )
